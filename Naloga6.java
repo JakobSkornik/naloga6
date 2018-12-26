@@ -4,12 +4,17 @@ import java.io.*;
 //java Naloga6 C:\Users\User\Desktop\test.txt C:\Users\User\Desktop\out.txt
 
 class Struct {
+    
+    //struct contains array of Cities (objects) as a Map, array of visited cities for recursion and a number that increments
+    //whenever a viable path is found
 
     public int[] mapa_poti;
     private Mapa m;
     public int rezultat;
 
     class Mesto {
+        
+        //each city has an id and a list of connections
 
         int id;
         Povezava prva;
@@ -22,6 +27,8 @@ class Struct {
     }
 
     class Povezava {
+        
+        //connections connect two cities and have a height condition, also next pointer
 
         Mesto p_mesto;
         Mesto d_mesto;
@@ -37,7 +44,9 @@ class Struct {
         }
     }
 
-    class Mapa {
+    class Mapa 
+        
+        //array of cities
 
         Mesto[] karta;
 
@@ -56,6 +65,10 @@ class Struct {
     }
 
     public void vnesi (String ukaz) {
+        
+        //input is processed here
+        //if a city, from input string, isn't present, it is created here  
+        
         String[] p = ukaz.split(",");
 
         Povezava prazna = new Povezava(null, null, -1, null);
@@ -67,10 +80,14 @@ class Struct {
         if (m.karta[Integer.parseInt(p[1])] == null)
             m.karta[Integer.parseInt(p[1])] = new Mesto (Integer.parseInt(p[1]), prazna_2);
 
+        //connection is added to cities here
+        
         dodaj_povezavo (m.karta[Integer.parseInt(p[0])], m.karta[Integer.parseInt(p[1])], Integer.parseInt(p[2]));
     }
 
     public void dodaj_povezavo (Mesto prvo, Mesto drugo, int predor) {
+        
+        //two unique connections are created and added to the list
 
         Povezava p = new Povezava(prvo, drugo, predor, null);
         Povezava pp = new Povezava(prvo, drugo, predor, null);
@@ -86,6 +103,8 @@ class Struct {
 
     public void izpisi_mapo () {
 
+        //for debugging purposes
+        
         for (Mesto mesto : m.karta) {
 
             if (mesto != null) {
@@ -102,14 +121,23 @@ class Struct {
     }
 
     public void poti (int trenutno, int koncno, int visina) {
+        
+        //this function goes through all possible paths from starting city to the destination
 
+        
+        //if a connection is found
+        
         if (trenutno == koncno) {
 
             rezultat++;
             return;
         }
 
+        //for loop through all connections of the city (trenutno... current city id)
+        
         for (Povezava p = m.karta[trenutno].prva.next; !overEnd(p); p = p.next) {
+            
+            //if a condition is present it used here
 
             if (p.predor >= visina || p.predor == -1) {
 
@@ -118,6 +146,8 @@ class Struct {
                 if (kam == trenutno)
                     kam = p.d_mesto.id;
 
+                //array of visited cities moves the recursion only through unvisited cities
+                
                 if (mapa_poti[kam] == 0) {
 
                     mapa_poti[kam] = 1;
