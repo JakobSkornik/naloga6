@@ -44,7 +44,7 @@ class Struct {
         }
     }
 
-    class Mapa 
+    class Mapa {
         
         //array of cities
 
